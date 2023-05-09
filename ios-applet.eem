@@ -1,6 +1,5 @@
 event manager applet ciscoautocert
- event none
- event timer cron cron-entry "5 * * * *"
+ event timer cron cron-entry "*/30 * * * *"
  action 010 syslog msg "[fgallina - CISCOAUTOCERT] Looking for ciscoautocert.p12 in bootflash..."
  action 012 cli command "enable"
  action 014 cli command "dir bootflash:/guest-share/ciscoautocert.p12"
