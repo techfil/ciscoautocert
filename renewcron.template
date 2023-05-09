@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# echo "$(date) - cron entry ran as $(whoami)" >> /home/guestshell/ciscoautocert.log
+
+ENVPATHHERE/bin/python ENVPATHHERE/bin/certbot renew --quiet  --force-renewal --no-random-sleep-on-renew --config-dir /root/certbot-config/ --work-dir /root/certbot-work/ --logs-dir /root/certbot-logs/ --deploy-hook /root/renew-hook.sh

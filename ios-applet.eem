@@ -1,0 +1,25 @@
+event manager applet ciscoautocert
+ event none
+ event timer cron cron-entry "5 * * * *"
+ action 010 syslog msg "[fgallina - CISCOAUTOCERT] Looking for ciscoautocert.p12 in bootflash..."
+ action 012 cli command "enable"
+ action 014 cli command "dir bootflash:/guest-share/ciscoautocert.p12"
+ action 016 regexp ".*No such file or directory" "$_cli_result"
+ action 020 if $_regexp_result eq "0"
+ action 022  syslog msg "[fgallina - CISCOAUTOCERT] New Let's Encrypt certificate found! Will proceed to install it."
+ action 032  cli command "config t"
+ action 034  cli command "file prompt quiet"
+ action 036  cli command "no crypto pki trustpoint CISCOAUTOCERT" pattern ".*"
+ action 038  cli command "y"
+ action 040  cli command "crypto key zeroize rsa CISCOAUTOCERT" pattern ".*"
+ action 042  cli command "y"
+ action 044  cli command "crypto pki import CISCOAUTOCERT pkcs12 bootflash:/guest-share/ciscoautocert.p12 password cisco" pattern ".*"
+ action 050  cli command "no"
+ action 146  syslog msg "[fgallina - CISCOAUTOCERT] Let's Encrypt certificate updated. Deleting the p12 file..."
+ action 147  cli command "default file prompt"
+ action 148  cli command "do delete /force bootflash:/guest-share/ciscoautocert.p12"
+ action 152  syslog msg "[fgallina - CISCOAUTOCERT] Cleanup complete."
+ action 154  cli command "end"
+ action 160 else
+ action 162  syslog msg "[fgallina - CISCOAUTOCERT] No new certificate found. Nothing to do."
+ action 164 end
