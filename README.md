@@ -15,7 +15,7 @@ as documented in [https://retibus.net/blog/letsencrypt-on-cisco-routers/](https:
 * enter into the guestshell
 * run `sudo bash` (from now on it's assumed you are always root unless stated otherwise)
 * `mkdir /root && cd /root`
-* `yum install git python3.9`
+* `yum install git python3.9` - (if yum fails with GPG errors, refer to [https://github.com/techfil/ciscoautocert/issues/1#issuecomment-1872160562] for a fix on ARM platforms)
 * `git clone https://github.com/techfil/ciscoautocert.git`
 * `python3.9 -m venv ciscoautocert`
 * `source ciscoautocert/bin/activate`
